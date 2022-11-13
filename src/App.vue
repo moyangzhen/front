@@ -14,13 +14,13 @@
         <div class="layui-form-item">
           <label class="layui-form-label">密码</label>
           <div class="layui-input-inline">
-            <input type="password" name="title" v-model.trim="password" placeholder="请输入密码" autocomplete="off" class="layui-input" />
+            <input type="password" name="title" v-model.trim="password" v-validate="'required|password'" placeholder="请输入密码" autocomplete="off" class="layui-input" />
           </div>
         </div>
         <div class="layui-form-item">
           <label class="layui-form-label">验证码</label>
           <div class="layui-input-inline">
-            <input type="text" name="title" v-model="code" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input" />
+            <input type="text" name="title" v-model="code" v-validate="'required|code'" placeholder="请输入标题" autocomplete="off" class="layui-input" />
           </div>
           <div class="layui-form-mid svg" @click.stop="getCaptcha" v-html="svg"></div>
         </div>

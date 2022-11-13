@@ -9,10 +9,9 @@ import zh from "vee-validate/dist/locale/zh_CN";
 import "./local/index";
 Vue.config.productionTip = false;
 Vue.use(VeeValidate);
-Validator.localize("zh-CN", zh);
-// const validator = new Validator();
-// validator.localize("zh-CN");
-// validator.localize("zh-CN");
+// Validator.localize("zh-CN", zh);
+const validator = new Validator();
+validator.localize("zh-CN");
 new Vue({
   router,
   store,
