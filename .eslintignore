@@ -1,3 +1,5 @@
 main.js
 vue.config.js
 src/local/index.js
+src/router/index.js
+src/router.js

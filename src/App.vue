@@ -1,129 +1,173 @@
 <template>
   <div id="app">
-    <div class="layui-container">
-      <form class="layui-form layui-form-pane" action="">
-        <div class="layui-form-item">
-          <label class="layui-form-label">用户名</label>
-          <ValidationProvider name="用户名" rules="required|email" v-slot="{ errors }">
-            <div class="layui-input-inline">
-              <input type="text" name="name" v-model.trim="name" placeholder="请输入标题" autocomplete="off" class="layui-input" />
-            </div>
-            <div class="error layui-form-mid">{{ errors[0] }}</div>
-          </ValidationProvider>
-        </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">密码</label>
-          <ValidationProvider name="密码" rules="required|min:6" v-slot="{ errors }">
-            <div class="layui-input-inline">
-              <input type="password" name="password" v-model.trim="password" placeholder="请输入密码" autocomplete="off" class="layui-input" />
-            </div>
-            <div class="error layui-form-mid">{{ errors[0] }}</div>
-          </ValidationProvider>
-        </div>
-        <div class="layui-form-item">
-
-          <label class="layui-form-label">验证码</label>
-          <ValidationProvider name="验证码" rules="required|min:4" v-slot="{ errors }">
-            <div class="clear">
-              <div class="layui-input-inline">
-                <input type="text" name="code" v-model="code" placeholder="请输入验证码" autocomplete="off" class="layui-input" />
-              </div>
-              <div class="layui-form-mid svg" @click.stop="getCaptcha" v-html="svg"></div>
-            </div>
-            <div class="error">{{ errors[0] }}</div>
-          </ValidationProvider>
-        </div>
-        <button type="button" class="layui-btn" @click="checkForm">点击登陆</button>
-        <a class="imooc-link" href="http://www.layui.com">忘记密码</a>
-      </form>
-    </div>
+    <imooc-header></imooc-header>
+    <router-view></router-view>
+    <imooc-footer></imooc-footer>
   </div>
 </template>
 <script>
-import axios from 'axios'
-import { ValidationProvider, extend } from 'vee-validate'
-import * as rules from 'vee-validate/dist/rules'
-import zh from 'vee-validate/dist/locale/zh_CN'
-for (const rule in rules) {
-  extend(rule, {
-    ...rules[rule],
-    message: zh.messages[rule]
-  })
-}
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 export default {
   name: 'app',
-  data () {
-    return {
-      svg: '',
-      name: '',
-      password: '',
-      code: '',
-      errorMsg: ''
-    }
-  },
   components: {
-    ValidationProvider
+    'imooc-header': Header,
+    'imooc-footer': Footer
   },
-  mounted () {
-    this.getCaptcha()
-  },
-  methods: {
-    getCaptcha () {
-      axios.get('http://localhost:3000/getCaptcha').then((res) => {
-        if (res.status === 200) {
-          const obj = res.data
-          if (obj.code === 200) {
-            this.svg = res.data.data
-          }
-        }
-      })
-    },
-    checkForm () {
-      this.errorMsg = []
-      // regEx email
-      if (!this.name) {
-        this.errorMsg.push('登陆名为空')
-      }
-      if (!this.password
-      ) {
-        this.errorMsg.push('密码为空')
-      }
-      if (!this.code) {
-        this.errorMsg.push('验证码为空')
-      }
-    }
+  computed: {
+  }
+}
+</script>
+
+<style lang="scss">
+@import "assets/css/global.css";
+@import "assets/css/layui-layer/layer.css";
+// @import "assets/css/utilities.scss";
+
+body {
+  margin-top: unset !important;
+  padding-top: 61px;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#app {
+  height: 100%;
+  overflow-y: auto;
+}
+
+// 公用样式
+.svg {
+  position: relative;
+  // top: -4px;
+  svg {
+    position: absolute;
+    top: -10px;
+
+    height: 50px;
+  }
+}
+.gray {
+  color: #999;
+}
+
+.orange {
+  color: #ff5722;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+// .pd20 {
+//   padding: 20px;
+// }
+
+@for $i from 0 to 5 {
+  .pd#{$i} {
+    padding: $i * 10 + px !important;
+  }
+  .pt#{$i} {
+    padding-top: $i * 10 + px !important;
+  }
+  .pl#{$i} {
+    padding-left: $i * 10 + px !important;
+  }
+  .pr#{$i} {
+    padding-right: $i * 10 + px !important;
+  }
+  .pb#{$i} {
+    padding-bottom: $i * 10 + px !important;
+  }
+  .mr#{$i} {
+    margin-right: $i * 10 + px !important;
+  }
+  .mt#{$i} {
+    margin-top: $i * 10 + px !important;
+  }
+  .ml#{$i} {
+    margin-left: $i * 10 + px !important;
   }
 }
 
-</script>
-<style lang="scss" scoped>
-#app {
-  background-color: #f2f2f2;
+.mt20 {
+  margin-top: -20px;
 }
-.layui-container {
-  padding-left: 20px;
-  background-color: #fff;
+
+.text-center {
+  text-align: center;
 }
-input {
-  width: 190px;
+.text-left {
+  text-align: left;
 }
-.svg {
-  padding: 0 !important;
-  vertical-align: top;
+.text-right {
+  text-align: right;
 }
-.error {
-  color: red;
-}
-.clear {
+
+.d-hide {
+  position: absolute;
   overflow: hidden;
+  height: 0;
 }
-.imooc-link {
-  margin-left: 10px;
-  &:hover {
-    color: #009688;
+
+.d-flex {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  &.flex-start {
+    justify-content: flex-start;
+  }
+  &.flex-end {
+    justify-content: flex-end;
+  }
+  &.flex-center {
+    justify-content: center;
   }
 }
-.bfc {
-  overflow: hidden;
+
+.link {
+  color: #01aaed;
+}
+.success {
+  color: #5fb878;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes bounceOut {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+.fade-leave-active {
+  animation: bounceOut 0.3s;
+}
+
+.fade-enter-active,
+.fade-enter-to {
+  animation: bounceIn 0.3s;
 }
 </style>
