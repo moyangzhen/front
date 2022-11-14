@@ -21,16 +21,17 @@
           </ValidationProvider>
         </div>
         <div class="layui-form-item">
-          <div class="clear">
-            <label class="layui-form-label">验证码</label>
-            <ValidationProvider name="验证码" rules="required|min:4" v-slot="{ errors }">
+
+          <label class="layui-form-label">验证码</label>
+          <ValidationProvider name="验证码" rules="required|min:4" v-slot="{ errors }">
+            <div class="clear">
               <div class="layui-input-inline">
                 <input type="text" name="code" v-model="code" placeholder="请输入验证码" autocomplete="off" class="layui-input" />
               </div>
               <div class="layui-form-mid svg" @click.stop="getCaptcha" v-html="svg"></div>
-              <div class="error">{{ errors[0] }}</div>
-            </ValidationProvider>
-          </div>
+            </div>
+            <div class="error">{{ errors[0] }}</div>
+          </ValidationProvider>
         </div>
         <button type="button" class="layui-btn" @click="checkForm">点击登陆</button>
         <a class="imooc-link" href="http://www.layui.com">忘记密码</a>
@@ -121,5 +122,8 @@ input {
   &:hover {
     color: #009688;
   }
+}
+.bfc {
+  overflow: hidden;
 }
 </style>
