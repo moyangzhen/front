@@ -117,6 +117,7 @@ div>
 
 <script>
 import { ValidationProvider } from 'vee-validate'
+import { getCode } from '../api/login'
 export default {
   name: 'forgetComponent',
   components: {
@@ -130,8 +131,16 @@ export default {
     }
   },
   mounted () {
+    this._getCode()
   },
   methods: {
+    _getCode () {
+      getCode().then((res) => {
+        if (res.code === 200) {
+          this.svg = res.data
+        }
+      })
+    }
   }
 }
 </script>
