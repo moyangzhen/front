@@ -42,9 +42,7 @@
                         <div class="layui-input-inline">
                           <input type="text" name="code" v-model="code" placeholder="请输入验证码" autocomplete="off" class="layui-input" />
                         </div>
-                        <div class>
-                          <span class="svg" style="color: #c00" @click="_getCode()" v-html="svg"></span>
-                        </div>
+                        <span class="svg" style="color: #c00" @click="_getCode()" v-html="svg"></span>
                       </div>
                       <div class="layui-form-mid">
                         <span style="color: #c00">{{ errors[0] }}</span>
@@ -75,8 +73,8 @@
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from
-  'vee-validate'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import { getCode } from '@/api/login'
 export default {
   name: 'loginComponent',
   components: {
@@ -92,9 +90,16 @@ export default {
     }
   },
   mounted () {
+    this._getCode()
   },
   methods: {
-
+    _getCode () {
+      getCode().then((res) => {
+        if (res.code === 200) {
+          this.svg = res.data
+        }
+      })
+    }
   }
 }
 </script>
