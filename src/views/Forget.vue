@@ -104,7 +104,7 @@ div>
                   </validation-provider>
                 </div>
                 <div class="layui-form-item">
-                  <button type="button" class="layui-btn" alert="1" @click="submit()">提交</button>
+                  <button type="button" class="layui-btn" alert="1" @click="submit">提交</button>
                 </div>
               </form>
             </div>
@@ -117,7 +117,7 @@ div>
 
 <script>
 import { ValidationProvider } from 'vee-validate'
-import { getCode } from '../api/login'
+import { getCode, forget } from '../api/login'
 export default {
   name: 'forgetComponent',
   components: {
@@ -138,6 +138,17 @@ export default {
       getCode().then((res) => {
         if (res.code === 200) {
           this.svg = res.data
+        }
+      })
+    },
+    submit () {
+      forget({
+        username: this.username,
+        code: this.code
+      }).then((res) => {
+        console.log(res)
+        if (res.code === 200) {
+          alert('发送成功')
         }
       })
     }
