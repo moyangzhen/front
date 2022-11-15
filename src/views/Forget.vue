@@ -146,7 +146,6 @@ export default {
         username: this.username,
         code: this.code
       }).then((res) => {
-        console.log(res)
         if (res.code === 200) {
           alert('发送成功')
         }
