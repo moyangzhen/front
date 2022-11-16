@@ -93,8 +93,7 @@ div>
                         <input type="text" name="code" v-model="code" placeholder="请输入验证码" autocomplete="off" class="layui-input" />
                       </div>
                       <div class>
-                        <span class="svg" style="color: #c00;
-" @click="_getCode()" v-html="svg"></span>
+                        <span class="svg" style="color: #c00;" @click="_getCode()" v-html="svg"></span>
                       </div>
                     </div>
                     <div class="layui-form-mid">

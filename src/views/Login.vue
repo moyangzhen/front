@@ -106,5 +106,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// 公用样式可以放在App.vue中
 </style>
