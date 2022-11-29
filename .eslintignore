@@ -4,3 +4,5 @@ src/local/index.js
 src/router/index.js
 src/router.js
 src/api/*
+src/utils/*
+src/config/*
