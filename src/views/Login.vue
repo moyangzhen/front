@@ -9,7 +9,7 @@
           </li>
         </ul>
         <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0">
-          <validation-observer ref="observer" v-slot="{ validate }">
+          <validation-observer ref="observer" v-slot='{validate}'>
             <div class="layui-tab-item layui-show">
               <div class="layui-form layui-form-pane">
                 <form method="post">
@@ -74,7 +74,8 @@
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { getCode } from '@/api/login'
+import { getCode, login } from '@/api/login'
+import uuid from 'uuid'
 export default {
   name: 'loginComponent',
   components: {
@@ -90,14 +91,39 @@ export default {
     }
   },
   mounted () {
+    let sid = ''
+    if (localStorage.getItem('sid')) {
+      sid = localStorage.getItem('sid')
+    } else {
+      sid = uuid()
+      localStorage.setItem('sid', sid)
+    }
+    console.log(sid, '我是sid')
+    this.$store.commit('setSid', sid)
     this._getCode()
   },
   methods: {
     _getCode () {
-      getCode().then((res) => {
-        console.log(res)
+      const sid = this.$store.state.sid
+      getCode(sid).then((res) => {
         if (res.code === 200) {
           this.svg = res.data
+        }
+      })
+    },
+    async submit () {
+      const isValid = await this.$refs.observer.validate()
+      if (!isValid) {
+        return
+      }
+      login({
+        username: this.username,
+        password: this.password,
+        code: this.code,
+        sid: this.$store.state.sid
+      }).then((res) => {
+        if (res.code === 200) {
+          console.log(res)
         }
       })
     }

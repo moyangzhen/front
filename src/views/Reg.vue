@@ -111,7 +111,7 @@ validate }">
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { getCode } from '@/api/login'
+import { getCode, regist } from '@/api/login'
 export default {
   name: 'regComponent',
   data () {
@@ -136,6 +136,22 @@ export default {
       getCode().then((res) => {
         if (res.code === 200) {
           this.svg = res.data
+        }
+      })
+    },
+    async submit () {
+      const isValid = await this.$refs.observer.validate()
+      if (!isValid) {
+        return
+      }
+      regist({
+        username: this.username,
+        password: this.password,
+        code: this.code,
+        sid: this.$store.state.sid
+      }).then((res) => {
+        if (res.code === 200) {
+          console.log(res)
         }
       })
     }

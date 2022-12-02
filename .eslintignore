@@ -6,3 +6,4 @@ src/router.js
 src/api/*
 src/utils/*
 src/config/*
+src/store/*
