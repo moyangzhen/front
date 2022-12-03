@@ -7,3 +7,4 @@ src/api/*
 src/utils/*
 src/config/*
 src/store/*
+src/components/modules/alert/index.js

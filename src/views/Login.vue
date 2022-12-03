@@ -98,13 +98,13 @@ export default {
       sid = uuid()
       localStorage.setItem('sid', sid)
     }
-    console.log(sid, '我是sid')
     this.$store.commit('setSid', sid)
     this._getCode()
   },
   methods: {
     _getCode () {
       const sid = this.$store.state.sid
+      console.log(sid, '我是sid')
       getCode(sid).then((res) => {
         if (res.code === 200) {
           this.svg = res.data
@@ -124,6 +124,8 @@ export default {
       }).then((res) => {
         if (res.code === 200) {
           console.log(res)
+        } else if (res.code === 500) {
+          this.$alert('用户名密码校验失败，请检查')
         }
       })
     }
