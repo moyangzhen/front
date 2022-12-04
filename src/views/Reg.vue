@@ -111,7 +111,7 @@ validate }">
 
 <script>
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import { getCode, regist } from '@/api/login'
+import { getCode, reg } from '@/api/login'
 export default {
   name: 'regComponent',
   data () {
@@ -133,7 +133,8 @@ export default {
   },
   methods: {
     _getCode () {
-      getCode().then((res) => {
+      const sid = this.$store.state.sid
+      getCode(sid).then((res) => {
         if (res.code === 200) {
           this.svg = res.data
         }
@@ -142,16 +143,35 @@ export default {
     async submit () {
       const isValid = await this.$refs.observer.validate()
       if (!isValid) {
+        // ABORT!!
         return
       }
-      regist({
+      reg({
         username: this.username,
         password: this.password,
+        name: this.name,
         code: this.code,
         sid: this.$store.state.sid
       }).then((res) => {
         if (res.code === 200) {
+          this.username = ''
+          this.password = ''
+          this.repassword = ''
+          this.name = ''
+          this.code = ''
+          requestAnimationFrame(() => {
+            this.$refs.observer.reset()
+          })
+          // 跳转到登录界面，让用户登录
+          this.$alert('注册成功')
+          setTimeout(() => {
+            this.$router.push('/login')
+          }, 1000)
           console.log(res)
+        } else {
+          // username -> '用户名已经注册'
+          // res.msg = { username: [], name: [], code: []}
+          this.$refs.observer.setErrors(res.msg)
         }
       })
     }
